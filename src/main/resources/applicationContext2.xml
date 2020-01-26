@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--配置目标类-->
+    <bean id="customDao" class="com.imooc.aop.demo4.CustomDao"></bean>
+    <!--配置通知-->
+    <bean id="myAroundAdvice" class="com.imooc.aop.demo4.MyAroundAdvice"/>
+    <!--配置切入点-->
+    <bean id="myAdvice" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <!--<property name="pattern" value=".*save.*"/>-->
+        <property name="patterns" value=".*save.*,.*delete.*"/>
+        <property name="advice" ref="myAroundAdvice"/>
+    </bean>
+    <!--配置产生代理-->
+    <bean id="customDaoProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="target" ref="customDao"/>
+        <property name="proxyTargetClass" value="true"/>
+        <property name="interceptorNames" value="myAdvice"/>
+    </bean>
+
+
+</beans>
