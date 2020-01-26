@@ -279,3 +279,16 @@ request、session。
 
 步骤十一：执行destroy-method中指定的mydestroy
 
+6、Spring的Bean管理：注解方式
+
+（1）applicationContext.xml中开启注解扫描：
+          
+     <context:component-scan base-package="要扫描的包" />
+（2）类上使用注解：
+      
+      @Repository、@Service、@Controller   
+
+7、spring配置里<context:annotation-config>和<context:component-scan>区别
+
+    annotation-config处理@autowired之类的注解（共有四类） 前提是注解作用的类已经被注册到spring容器里（bean id=“” class=“”） 
+    component-scan除了包含annotation-config的作用外，还能自动扫描和注册base-package下有@component之类注解的类，将其作为bean注册到spring容器里        
