@@ -212,6 +212,29 @@ public class MyCglibProxy implements MethodInterceptor {
    a.基于Bean名称的自动代理
    
    b.基于切面信息产生代理
+
+5、SpringAop基于AspectJ的实现：AspectJ是一个基于java语言的AOP框架，Spring传统的AOP在
+有了AspectJ框架后，对该框架进行了集成，简化了SpringAOP的实现，即新版本的SpringAOP均是
+基于AspectJ实现的。（1、注解方式  2、xml方式）
+
+一、开发环境的搭建：基于AspectJ
+
+（1）pom文件中引入spring相关依赖、springaop依赖、aspectj依赖
+
+（2）applicationContext.xml中配置约束
+          
+        <?xml version="1.0" encoding="UTF-8"?>
+       <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--开启AspectJ的注解开发，自动代理=====================-->
+    <aop:aspectj-autoproxy/>
+    </beans>
+   
+
    
 第二章节：前情回顾
 
@@ -294,3 +317,5 @@ request、session。
     annotation-config处理@autowired之类的注解（共有四类） 前提是注解作用的类已经被注册到spring容器里（bean id=“” class=“”） 
     <context:component-scan  base-package="包名" />
     component-scan除了包含annotation-config的作用外，还能自动扫描和注册base-package下有@component之类注解的类，将其作为bean注册到spring容器里        
+    
+    
