@@ -219,6 +219,7 @@ public class MyCglibProxy implements MethodInterceptor {
 
 一、开发环境的搭建：基于AspectJ
 
+1、
 （1）pom文件中引入spring相关依赖、springaop依赖、aspectj依赖
 
 （2）applicationContext.xml中配置约束
@@ -234,6 +235,37 @@ public class MyCglibProxy implements MethodInterceptor {
     <aop:aspectj-autoproxy/>
     </beans>
    
+2、@AspectJ提供不同的通知类型：
+  
+    @Before前置通知，相当于BeforeAdvice 
+    @AfterReturning前置通知，相当于AfterReturningAdvice
+    @Around环绕通知相当于MethodInterceptor
+    @AfterThrowing异常抛出通知，相当于ThrowAdvice
+    @After 最终final通知，不管是否异常，该通知都会执行
+    @DeclareParents引介通知，相当于IntroductionInterceptor(不要求掌握)   
+
+3、在通知中通过value属性定义切点
+
+    通过execution函数，可以定义切点的方法切入
+    语法：
+    -execution（<访问修饰符>？<返回类型><方法名>（<参数>）<异常>）
+    访问修饰符可以省略
+    例如：
+    匹配所有类public方法 execution（public * *（..））
+    匹配指定包下所有类方法 execution（* com.imooc.dao.*（..））不包含子包
+    execution（* com.imooc.dao..*（..））包含子包
+    匹配指定类所有方法
+    execution（* com.imooc.service.UserService.*（..））
+    匹配实现特定接口所有类方法
+    execution（* com.imooc.dao.GenericDAO+.*（..））
+    +号代表子类
+    匹配所有save开头的方法
+    execution（* save*(..））
+
+4、案例：demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1
+
+
+
 
    
 第二章节：前情回顾

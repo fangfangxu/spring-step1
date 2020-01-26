@@ -4,7 +4,12 @@
        xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
-
     <!--开启AspectJ的注解开发，自动代理=====================-->
     <aop:aspectj-autoproxy/>
+    <!--配置目标类-->
+    <bean id="productDao" class="demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao"/>
+
+
+
+
 </beans>
