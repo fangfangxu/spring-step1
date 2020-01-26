@@ -175,7 +175,7 @@ public class MyCglibProxy implements MethodInterceptor {
         <property name="pattern" value="com\.imooc\.aop\.demo6\.Custom\.save" />
         <property name="advice" ref="myAroundAdvice"/>
     </bean>
-  <!--基于切面的自动代理的创建-->
+    <!--基于切面的自动代理的创建-->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
     </bean>
 
