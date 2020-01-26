@@ -2,12 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+    <!--配置目标类-->
     <bean id="testDao1" class="com.imooc.aop.demo5.TestDao1"/>
     <bean id="testDao2" class="com.imooc.aop.demo5.TestDao2"/>
-
+    <!--配置通知-->
     <bean id="myAroundAdvice" class="com.imooc.aop.demo5.MyAroundAdvice"/>
-
+    <!--配置BeanNameAutoProxyCreator完成自动代理的创建：切面为通知-->
     <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
         <property name="beanNames" value="*Dao*"/>
         <property name="interceptorNames" value="myAroundAdvice"/>

@@ -6,7 +6,7 @@
     <bean id="customDao" class="com.imooc.aop.demo4.CustomDao"></bean>
     <!--配置通知-->
     <bean id="myAroundAdvice" class="com.imooc.aop.demo4.MyAroundAdvice"/>
-    <!--配置切入点-->
+    <!--配置带有切入点的切面-->
     <bean id="myAdvice" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
         <!--<property name="pattern" value=".*save.*"/>-->
         <property name="patterns" value=".*save.*,.*delete.*"/>
@@ -15,6 +15,7 @@
     <!--配置产生代理-->
     <bean id="customDaoProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
         <property name="target" ref="customDao"/>
+        <!--是否对类代理而不是接口-->
         <property name="proxyTargetClass" value="true"/>
         <property name="interceptorNames" value="myAdvice"/>
     </bean>

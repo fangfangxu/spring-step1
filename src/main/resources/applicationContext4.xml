@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--<bean id="custom" class="com.imooc.aop.demo6.Custom"/>-->
+   <!--配置目标类-->
+    <bean id="customDao" class="com.imooc.aop.demo6.Custom"/>
+    <bean id="userDao" class="com.imooc.aop.demo6.UserImpl"/>
+   <!--配置通知-->
+    <bean id="myAroundAdvice" class="com.imooc.aop.demo6.MyAroundAdvice"/>
+   <!--配置切面-->
+    <bean id="myAdvice" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+        <property name="pattern" value="com\.imooc\.aop\.demo6\.Custom\.save" />
+        <property name="advice" ref="myAroundAdvice"/>
+    </bean>
+  <!--基于切面的自动代理的创建-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+    </bean>
+</beans>
