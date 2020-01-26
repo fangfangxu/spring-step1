@@ -289,6 +289,8 @@ request、session。
       @Repository、@Service、@Controller   
 
 7、spring配置里<context:annotation-config>和<context:component-scan>区别
-
+ 
+    <context:annotation-config/>
     annotation-config处理@autowired之类的注解（共有四类） 前提是注解作用的类已经被注册到spring容器里（bean id=“” class=“”） 
+    <context:component-scan  base-package="包名" />
     component-scan除了包含annotation-config的作用外，还能自动扫描和注册base-package下有@component之类注解的类，将其作为bean注册到spring容器里        
