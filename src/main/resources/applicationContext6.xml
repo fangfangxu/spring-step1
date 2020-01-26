@@ -8,7 +8,8 @@
     <aop:aspectj-autoproxy/>
     <!--配置目标类-->
     <bean id="productDao" class="demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao"/>
-
+    <!--定义切面-->
+    <bean id="myAspectJAnno" class="demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.MyAspectJAnno"/>
 
 
 
