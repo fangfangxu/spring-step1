@@ -212,3 +212,70 @@ public class MyCglibProxy implements MethodInterceptor {
    a.基于Bean名称的自动代理
    
    b.基于切面信息产生代理
+   
+第二章节：前情回顾
+
+1、IOC：控制反转，就是将原本程序中手动创建对象的控制权交给了
+Spring容器去管理
+
+2、DI:依赖注入：就是Spring创建对象的过程中，将这个对象依赖的属性注入进去
+
+3、Spring工厂类有BeanFactory、ApplicationContext等等。二者有所不同。BeanFactory
+是工厂实例化之后，在getBean时创建Bean。而ApplicationContext一加载配置文件时，就会将配置文件
+中单例模式类全部实例化。
+
+4、Spring三种实例化Bean方式：
+
+（1）使用类构造器实例化
+
+    <bean id=""  class=""/> 
+
+（2）使用静态工厂方法实例化（简单工厂模式）
+
+        Class:Bean
+        Class:BeanFactory{
+          public static Bean createBean(){
+             return new Bean();
+          }
+        }
+        <bean id="bean"  class="BeanFactory" factory-method="createBean"/> 
+
+（3）实例工厂方法实例化
+
+        Class:Bean
+        Class:BeanFactory{
+          public Bean createBean(){
+             return new Bean();
+          }
+        }
+        <bean id="beanFactory"  class="工厂类" />     
+        <bean id="bean"  factory-bean="beanFactory"  factory-method="createBean"/> 
+4、Spring创建的Bean的作用域：singleton、prototype（每次调用getBean（）时都会产生一个实例）、
+request、session。
+
+5、Spring容器中Bean的生命周期（11步）
+
+参考：demo7_beanInital
+
+步骤一：执行构造方法
+
+步骤二：设置属性
+
+步骤三：实现BeanNameAware，执行setBeanName
+
+步骤四：实现BeanFactoryAware，执行setBeanFactory
+
+步骤五：存在类实现BeanPostProcessor，执行前处理方法
+
+步骤六：实现InitializingBean，执行afterPropertiesSet
+
+步骤七：执行init-method中指定的myinit
+
+步骤八：存在类实现BeanPostProcessor，执行后处理方法
+
+步骤九：自身业务方法
+
+步骤十：实现DisposableBean，执行destroy
+
+步骤十一：执行destroy-method中指定的mydestroy
+
