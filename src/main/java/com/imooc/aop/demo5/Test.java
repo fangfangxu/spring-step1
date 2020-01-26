@@ -3,6 +3,9 @@ package com.imooc.aop.demo5;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * 基于bean名称的自动代理的创建：BeanNameAutoProxyCreator
+ */
 public class Test {
     @org.junit.Test
     public void test(){
