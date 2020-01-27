@@ -321,7 +321,7 @@ public class MyCglibProxy implements MethodInterceptor {
     @AfterThrowing(value = "myPointcut4()",throwing = "e")
      public void afterThrowing(Throwable e){
       System.out.println("异常抛出通知======================"+e.getMessage());
-   }
+    }
 
     @After(value = "myPointcut5() || myPointcut1()")
      public void after(){
