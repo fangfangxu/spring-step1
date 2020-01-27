@@ -264,10 +264,102 @@ public class MyCglibProxy implements MethodInterceptor {
 
 4、案例：demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1
 
+(1)定义目标类：
+      
+    public class ProductDao {
+    public void save(){
+        System.out.println("保存商品...");
+    }
 
+    public void delete(){
+        System.out.println("删除商品...");
+    }
 
+    public String update(){
+        System.out.println("修改商品...");
+        return "hello";
+    }
+    public void findOne(){
+        System.out.println("查询一个商品...");
+     //        int i=1/0;
+    }
 
+    public void findAll(){
+        System.out.println("查询所有商品...");
+     //        int i=1/0;
+    }
+     }
+
+（2）定义切面：
+
+     @Aspect 
+    public class MyAspectJAnno {  
+     /**
+     * 定义前置通知：通过value属性设置切点
+    */
+    @Before(value = "myPointcut1()")
+    public void before(JoinPoint joinPoint){
+      System.out.println("前置通知======================"+joinPoint);
+    }
+
+  
+     @AfterReturning(value = "myPointcut2()",returning = "result")
+     public void afterReturning(Object result){
+      System.out.println("后置通知======================"+result);
+    }
    
+   
+    @Around(value="myPointcut3()")
+     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+       System.out.println("环绕前通知======================");
+       Object object=joinPoint.proceed();
+       System.out.println("环绕后通知======================");
+       return object;
+     }
+
+
+    @AfterThrowing(value = "myPointcut4()",throwing = "e")
+     public void afterThrowing(Throwable e){
+      System.out.println("异常抛出通知======================"+e.getMessage());
+   }
+
+    @After(value = "myPointcut5() || myPointcut1()")
+     public void after(){
+          System.out.println("最终通知======================");
+     }
+
+    @Pointcut(value = "execution(* demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao.save(..))")
+     private void  myPointcut1(){};
+
+    @Pointcut(value = "execution(* demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao.delete(..))")
+    private void  myPointcut2(){};
+
+    @Pointcut(value = " execution(* demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao.update(..))")
+    private void  myPointcut3(){};
+
+    @Pointcut(value = " execution(* demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao.findOne(..))")
+    private void  myPointcut4(){};
+
+    @Pointcut(value = "execution(* demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao.findAll(..))")
+    private void  myPointcut5(){};
+     }
+
+（3）applicationContext.xml
+
+     <?xml version="1.0" encoding="UTF-8"?>
+     <beans xmlns="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+         <!--开启AspectJ的注解开发，自动代理=====================-->
+         <aop:aspectj-autoproxy/>
+         <!--配置目标类-->
+         <bean id="productDao" class="demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.ProductDao"/>
+         <!--定义切面-->
+         <bean id="myAspectJAnno" class="demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.MyAspectJAnno"/>
+     </beans>
+        
 第二章节：前情回顾
 
 1、IOC：控制反转，就是将原本程序中手动创建对象的控制权交给了

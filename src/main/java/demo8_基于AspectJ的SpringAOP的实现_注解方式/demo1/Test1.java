@@ -9,10 +9,10 @@ public class Test1 {
     public void test(){
         ApplicationContext context=new ClassPathXmlApplicationContext("applicationContext6.xml");
         ProductDao productDao=(ProductDao)context.getBean("productDao");
-        productDao.delete();
-        productDao.findAll();
-        productDao.findOne();
-        productDao.save();
-        productDao.update();
+        productDao.save();//前置
+        productDao.delete();//后置
+        productDao.update();//环绕
+        productDao.findOne();//异常
+        productDao.findAll();//最终
     }
 }
