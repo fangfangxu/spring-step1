@@ -359,6 +359,10 @@ public class MyCglibProxy implements MethodInterceptor {
          <!--定义切面-->
          <bean id="myAspectJAnno" class="demo8_基于AspectJ的SpringAOP的实现_注解方式.demo1.MyAspectJAnno"/>
      </beans>
+ 
+5、案例：demo9_基于AspectJ的SpringAOP的实现_xml方式
+
+
         
 第二章节：前情回顾
 

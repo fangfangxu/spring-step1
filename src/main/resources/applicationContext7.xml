@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--Xml配置方式完成AOP的开发=====================-->
+    <!--配置目标类-->
+   <bean id="customDao" class="demo9_基于AspectJ的SpringAOP的实现_xml方式.CustomDaoImpl" />
+    <!--配置切面类-->
+   <bean id="myAspectXml" class="demo9_基于AspectJ的SpringAOP的实现_xml方式.MyAspectXml"/>
+    <!--AOP的相关配置-->
+
+
+</beans>
