@@ -362,7 +362,75 @@ public class MyCglibProxy implements MethodInterceptor {
  
 5、案例：demo9_基于AspectJ的SpringAOP的实现_xml方式
 
+（1）定义接口+实现类
 
+（2）定义切面
+
+    /**
+     * 切面类
+     */
+    public class MyAspectXml {
+       //前置通知
+        public void before(JoinPoint joinPoint){
+            System.out.println("XML方式的前置通知================="+joinPoint);
+        }
+    
+        //后置通知
+        public void afterReturning(Object result){
+            System.out.println("XML方式的后置通知================="+result);
+        }
+    
+        //环绕通知
+        public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+            System.out.println("XML方式的环绕前=================");
+            Object o=joinPoint.proceed();
+            System.out.println("XML方式的环绕后=================");
+            return o;
+        }
+    
+        //异常通知
+        public void throwing(Throwable e){
+            System.out.println("XML方式的异常通知================="+e.getMessage());
+        }
+    
+        //最终通知
+        public void after(){
+            System.out.println("XML方式的最终通知=================");
+        }
+    }
+
+（3）applicationContext.xml
+
+     <?xml version="1.0" encoding="UTF-8"?>
+     <beans xmlns="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:aop="http://www.springframework.org/schema/aop" xsi:schemaLocation="
+             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                  http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+         <!--Xml配置方式完成AOP的开发=====================-->
+         <!--配置目标类-->
+        <bean id="customDao" class="demo9_基于AspectJ的SpringAOP的实现_xml方式.CustomDaoImpl" />
+         <!--配置切面类-->
+        <bean id="myAspectXml" class="demo9_基于AspectJ的SpringAOP的实现_xml方式.MyAspectXml"/>
+         <!--AOP的相关配置-->
+        <aop:config>
+            <aop:pointcut id="pointcut1" expression="execution(* demo9_基于AspectJ的SpringAOP的实现_xml方式.CustomDao.save(..))"/>
+            <aop:pointcut id="pointcut2" expression="execution(* demo9_基于AspectJ的SpringAOP的实现_xml方式.CustomDao.delete(..))"/>
+            <aop:pointcut id="pointcut3" expression="execution(* demo9_基于AspectJ的SpringAOP的实现_xml方式.CustomDao.update(..))"/>
+            <aop:pointcut id="pointcut4" expression="execution(* demo9_基于AspectJ的SpringAOP的实现_xml方式.CustomDao.findOne(..))"/>
+            <aop:pointcut id="pointcut5" expression="execution(* demo9_基于AspectJ的SpringAOP的实现_xml方式.CustomDao.findAll(..))"/>
+     
+            <aop:aspect ref="myAspectXml">
+                    <aop:before method="before" pointcut-ref="pointcut1"/>
+                    <aop:after-returning method="afterReturning" pointcut-ref="pointcut2" returning="result"/>
+                    <aop:around method="around" pointcut-ref="pointcut3"/>
+                    <aop:after-throwing method="throwing" pointcut-ref="pointcut4" throwing="e"/>
+                    <aop:after method="after" pointcut-ref="pointcut5"/>
+                </aop:aspect>
+        </aop:config>
+     
+     </beans>
+      
         
 第二章节：前情回顾
 

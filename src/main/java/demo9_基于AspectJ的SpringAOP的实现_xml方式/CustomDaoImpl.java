@@ -23,6 +23,7 @@ public class CustomDaoImpl implements CustomDao {
     @Override
     public void findOne() {
         System.out.println("查询一个客户....");
+//        int i=1/0;
     }
 
     @Override
