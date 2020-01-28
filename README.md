@@ -514,4 +514,24 @@ request、session。
     <context:component-scan  base-package="包名" />
     component-scan除了包含annotation-config的作用外，还能自动扫描和注册base-package下有@component之类注解的类，将其作为bean注册到spring容器里        
     
+
+第三章节：Spring组件：JDBC Template 简化持久化操作
+
+1、环境搭建
+
+（1）Maven
+    -Mysql驱动  -Spring组件（beans、core、context、aop）
     
+（2）Spring配置：spring.xml（配置两个Bean）
+     -数据源   -JDBC Template    
+     
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+             <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+             <property name="url" value="jdbc:mysql://localhost:3306/selection_course?useUnicode=true&amp;charactorEncoding=utf-8"/>
+             <property name="username" value="root"/>
+             <property name="password" value="123456"/>
+         </bean>
+     
+         <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+                <property name="dataSource" ref="dataSource"/>
+         </bean>

@@ -17,6 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+    <spring.version>4.2.4.RELEASE</spring.version>
   </properties>
 
   <dependencies>
@@ -37,31 +38,31 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>4.2.4.RELEASE</version>
+     <version>${spring.version}</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-core</artifactId>
-      <version>4.2.4.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>4.2.4.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-beans</artifactId>
-      <version>4.2.4.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-expression</artifactId>
-      <version>4.2.4.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>
 
     <dependency>
@@ -86,19 +87,41 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
-      <version>4.2.4.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>
     <!--专用作Aspectj开发的-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aspects</artifactId>
-      <version>4.2.4.RELEASE</version>
+      <version>${spring.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.aspectj</groupId>
       <artifactId>aspectjweaver</artifactId>
       <version>1.6.8</version>
+    </dependency>
+
+    <!--Mysql驱动-->
+    <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.44</version>
+    </dependency>
+
+    <!--Jdbc Template-->
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework/spring-tx -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${spring.version}</version>
     </dependency>
 
   </dependencies>
