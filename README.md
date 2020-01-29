@@ -698,5 +698,4 @@ request、session。
             stu.setBorn(resultSet.getDate("born"));
             return stu;
         }
-    }
-}
+    }}
