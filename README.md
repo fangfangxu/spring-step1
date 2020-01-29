@@ -711,6 +711,7 @@ request、session。
 （4）它是Spring框架对JDBC操作的封装，简单、灵活但不够强大。还得结合其他优秀的
 ORM框架来对持久层进行操作：eg：Mybatis
 
+
 第四章节：Spring事务管理
 
     
