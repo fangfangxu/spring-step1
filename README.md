@@ -699,3 +699,18 @@ request、session。
             return stu;
         }
     }}
+
+2、Jdbc Template
+
+（1）优点：简单、灵活
+
+（2）缺点：SQL与java代码掺杂在一起；功能不丰富（没分页、没完善的对象与对象之间对应关系）
+          
+（3）它想将JDBC API往ORM上引，但是只迈出了一小步
+
+（4）它是Spring框架对JDBC操作的封装，简单、灵活但不够强大。还得结合其他优秀的
+ORM框架来对持久层进行操作：eg：Mybatis
+
+第四章节：Spring事务管理
+
+    

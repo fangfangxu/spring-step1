@@ -5,6 +5,16 @@ public class Course {
     private String name;
     private int score;
 
+    public Course(){
+
+    }
+
+    public Course(int id, String name, int score) {
+        this.id = id;
+        this.name = name;
+        this.score = score;
+    }
+
     public int getId() {
         return id;
     }
@@ -27,5 +37,14 @@ public class Course {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", score=" + score +
+                '}';
     }
 }

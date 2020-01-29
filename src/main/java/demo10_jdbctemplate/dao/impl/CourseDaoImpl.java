@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
 @Repository
 public class CourseDaoImpl implements CourseDao {
     @Autowired
@@ -17,33 +18,33 @@ public class CourseDaoImpl implements CourseDao {
 
     @Override
     public void insert(Course course) {
-        String sql="insert into course(name,score) values(?,?)";
-        jdbcTemplate.update(sql,course.getName(),course.getScore());
+        String sql = "insert into course(name,score) values(?,?)";
+        jdbcTemplate.update(sql, course.getName(), course.getScore());
     }
 
     @Override
     public void update(Course course) {
-        String sql="update course set name=?,score=? where id=?";
-        jdbcTemplate.update(sql,course.getName(),course.getScore(),course.getId());
+        String sql = "update course set name=?,score=? where id=?";
+        jdbcTemplate.update(sql, course.getName(), course.getScore(), course.getId());
     }
 
     @Override
     public void delete(int id) {
-        String sql="delete course where id=?";
-        jdbcTemplate.update(sql,id);
+        String sql = "delete from course where id=?";
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
     public Course select(int id) {
-        String sql="select * from course where id=?";
-        Course course = jdbcTemplate.queryForObject(sql,new Object[]{id},new CourseRowMapper());
+        String sql = "select * from course where id=?";
+        Course course = jdbcTemplate.queryForObject(sql, new Object[]{id}, new CourseRowMapper());
         return course;
     }
 
     @Override
     public List<Course> selectAll() {
-        String sql="select * from course";
-        List<Course> courses =jdbcTemplate.query(sql,new CourseRowMapper());
+        String sql = "select * from course";
+        List<Course> courses = jdbcTemplate.query(sql, new CourseRowMapper());
         return courses;
     }
 
@@ -53,7 +54,7 @@ public class CourseDaoImpl implements CourseDao {
     private class CourseRowMapper implements RowMapper<Course> {
         @Override
         public Course mapRow(ResultSet resultSet, int i) throws SQLException {
-            Course course=new Course();
+            Course course = new Course();
             course.setId(resultSet.getInt("id"));
             course.setName(resultSet.getString("name"));
             course.setScore(resultSet.getInt("score"));

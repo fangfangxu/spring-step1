@@ -34,8 +34,8 @@ public class SelectionDaoImpl implements SelectionDao {
 
     @Override
     public List<Map<String, Object>> selectByStudent(int sid) {
-        String sql = "select stu.name,c.name,se.* from selection se " +
-                "left join on student stu on se.student=stu.id left join course c on c.id=se.course " +
+        String sql = "select stu.name as stuname,c.name,se.* from selection se " +
+                "left join  student stu on se.student=stu.id left join course c on c.id=se.course " +
                 "where se.student=? ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, sid);
         return list;
@@ -43,8 +43,8 @@ public class SelectionDaoImpl implements SelectionDao {
 
     @Override
     public List<Map<String, Object>> selectByCourse(int cid) {
-        String sql = "select stu.name,c.name,se.* from selection se " +
-                "left join on student stu on se.student=stu.id left join course c on c.id=se.course " +
+        String sql = "select stu.name as stuname,c.name,se.* from selection se " +
+                "left join  student stu on se.student=stu.id left join course c on c.id=se.course " +
                 "where se.course=? ";
         List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, cid);
         return list;
