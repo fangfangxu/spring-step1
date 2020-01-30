@@ -785,4 +785,30 @@ ORM框架来对持久层进行操作：eg：Mybatis
      那第一个事务到底是回滚还是提交？第一个事务在开启第二个begin之后提交了，其实和alter table一个原理，
      在这里第二个begin触发了MySQL的隐式提交
 
-
+    -- 每个窗口都得重新设置会话级别：事务隔离级别-读未提交：不能解决脏读、不可重复读、幻读
+    select @@transaction_isolation ;
+    set session transaction isolation level read uncommitted ;
+    
+    
+    -- 脏读演示
+    -- session1
+    -- 事务A
+    -- (3)
+    begin;
+    select * from products where id='100001';
+    rollback;
+    select * from products where id='100001' for update;
+    
+    select @@transaction_isolation ;
+    set session transaction isolation level read uncommitted ;
+    
+    -- session2
+    -- 事务B
+    -- (1)
+    begin;
+    -- (2)
+    select * from products where id='100001';
+    update products set stock=0  where id='100001';
+    select * from products where id='100001';
+    -- (4)
+    rollback;
