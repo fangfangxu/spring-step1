@@ -770,3 +770,19 @@ ORM框架来对持久层进行操作：eg：Mybatis
      解决办法：通过锁表解决        
      
 （3）Mysql事务处理---事务隔离级别    
+
+     Mysql事务隔离级别（从上到下执行效率越来越低）：
+     1、读未提交（read-uncommitted）：没有解决脏读、不可重复读和幻读的问题
+     2、读已提交（read-committed）：只解决了脏读的问题
+     3、可重复读（repeatable-read）：解决的脏读和不可重复读的问题
+     4、串行化（serializable）：解决了脏读、不可重复读和幻读的问题
+     执行语句：
+     select @@tx_isolation（8.0以后版本的查询语句为select @@transaction_isolation）查询默认隔离级别；
+     set session transaction isolation level XXX 设置当前会话隔离级别(xxx为名称 eg read-uncommitted)
+     
+     番外：
+     一个session 连续开启两个事务，第一事务不手动提交，也不手动回滚，然后立即开启第二个事务。
+     那第一个事务到底是回滚还是提交？第一个事务在开启第二个begin之后提交了，其实和alter table一个原理，
+     在这里第二个begin触发了MySQL的隐式提交
+
+
