@@ -21,7 +21,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     public void update(Product product) {
-        String sql = "update products set title=?,price=?,stock=?,status=? where id=?";
+        String sql = "update products2 set title=?,price=?,stock=?,status=? where id=?";
         jdbcTemplate.update(sql,product.getTitle(),product.getPrice(),product.getStock(),product.getStatus(),product.getId());
     }
 
