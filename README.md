@@ -790,7 +790,7 @@ ORM框架来对持久层进行操作：eg：Mybatis
     set session transaction isolation level read uncommitted ;
     
     
-    -- 脏读演示
+    -- 【脏读】
     -- session1
     -- 事务A
     -- (3)
@@ -812,3 +812,40 @@ ORM框架来对持久层进行操作：eg：Mybatis
     select * from products where id='100001';
     -- (4)
     rollback;
+    
+    -- 【不可重复读】
+    -- 事务A
+    BEGIN;
+    -- (1)
+    select * from products where id='100001';
+    -- (3)
+    select * from products where id='100001';
+    rollback;
+    
+    -- 事务B
+    -- (2)
+    begin;
+    update products set stock=50 where id='100001';
+    commit;
+
+    -- 【幻读】
+    -- 事务A
+    begin;
+    -- (1)
+    select * from products;
+    update products set stock=0;
+    -- (3)
+    select * from products;
+    commit;
+    
+    -- 事务B
+    -- (2)
+    begin;
+    select * from products;
+    insert into products(id,title,price,stock,status) VALUES(1,'小米test',100,100,'正常');
+    select * from products;
+    commit;
+    
+4、    
+    
+    
