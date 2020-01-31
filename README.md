@@ -974,7 +974,7 @@ ORM框架来对持久层进行操作：eg：Mybatis
    
    b.声明式事务处理  
    
-  编程式事务处理:
+ 【 a.编程式事务处理 】
   
   基于底层API:事务定义、事务管理器、事务状态
   
@@ -1115,4 +1115,103 @@ ORM框架来对持久层进行操作：eg：Mybatis
             });
         }
     }   
-                   
+
+ 【 b.声明式事务处理 】   
+
+ -Spring的声明事务处理是建立在AOP的基础之上的。其本质是对方法前后进行拦截，然后再目标方法
+  之前：创建或者加入一个事务，在执行完目标方法之后：根据执行情况提交或回滚事务
+  
+ -建议在开发中使用声明式事务，是因为这样可以使得业务代码纯粹干净，方便后期的代码维护。 
+ 
+ （1）基于TransactionInterceptor的声明式事务处理
+ 
+ （2）基于TransactionProxyFactoryBean的声明式事务处理
+ 
+ （3）基于<tx>命名空间的声明式事务处理
+ 
+ （4）基于@Transactional的声明式事务处理
+ 
+
+    （1）基于TransactionInterceptor的声明式事务处理
+ 
+ 
+         spring-dao.xml:
+         
+             <context:component-scan base-package="demo11_tx.dao"/>
+             <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                 <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                 <property name="url"
+                           value="jdbc:mysql://localhost:3306/os?useUnicode=true&amp;charactorEncoding=utf-8&amp;serverTimezone=UTC"/>
+                 <property name="username" value="root"/>
+                 <property name="password" value="123456"/>
+             </bean>
+         
+             <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+                 <property name="dataSource" ref="dataSource"/>
+             </bean>
+       
+       
+         spring-service3.xml:
+ 
+             <import resource="spring-dao.xml"/>
+             <!--<context:component-scan base-package="demo11_tx.service.impl"/>-->
+             <!--定义事务管理器：事务管理器实现类的选择：取决于持久层使用什么实现
+           Spring Jdbc Template选择DataSourceTransactionManager事务管理器，
+           那么DataSourceTransactionManager事务管理器，至少要告诉事务管理器你使用的数据源
+           是哪个-->
+             <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                 <property name="dataSource" ref="dataSource"/>
+             </bean>
+         
+             <!--(1)配置要拦截的目标类-->
+             <bean id="orderServiceTarget" class="demo11_tx.service.impl.OrderServiceImpl"/>
+         
+             <!--(2)配置拦截器-->
+             <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+                 <!--事务管理器-->
+                 <property name="transactionManager" ref="transactionManager"/>
+                 <!--定义事务传播行为、事务隔离级别、只读等等-->
+                 <property name="transactionAttributes">
+                     <props>
+                         <!--拦截方法：应用事务-->
+                         <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                         <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                         <prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
+                         <prop key="*">PROPAGATION_REQUIRED</prop>
+                     </props>
+                 </property>
+             </bean>
+         
+             <!--(3)将目标对象和拦截器进行关联:用拦截器去增强目标对象，增强后的对象才是我们要用的对象-->
+               <bean id="orderService" class="org.springframework.aop.framework.ProxyFactoryBean">
+                     <property name="target" ref="orderServiceTarget"/>
+                      <property name="interceptorNames">
+                              <list>
+                                  <idref bean="transactionInterceptor"/>
+                              </list>
+                      </property>
+               </bean>        
+               
+               
+               Service：
+               /**
+                * 声明式事务管理：基于AOP
+                */
+               @Service
+               public class OrderServiceImpl implements OrderService {
+                   @Autowired
+                   private OrderDao orderDao;
+                   @Autowired
+                   private ProductDao productDao;
+               
+                   @Override
+                   public void addOrder(Order order) {
+                           //第一步 生成订单
+                           orderDao.insert(order);
+                           //第二步 修改库存
+                           Product product = productDao.select(order.getProductsId());
+                           product.setStock(product.getStock() - order.getNumber());
+                           productDao.update(product);
+                           //提交事务
+                   }
+               }

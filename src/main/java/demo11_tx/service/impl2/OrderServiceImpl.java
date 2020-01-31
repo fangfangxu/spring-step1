@@ -11,7 +11,9 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-
+/**
+ * 编程式事务管理--基于TransactionManager
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
     @Autowired

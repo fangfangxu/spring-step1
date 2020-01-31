@@ -1,7 +1,6 @@
-package demo11_tx.service.impl1;
+package demo11_tx.service.impl;
 
 import demo11_tx.dao.OrderDao;
-
 import demo11_tx.dao.ProductDao;
 import demo11_tx.entity.Order;
 import demo11_tx.entity.Product;
@@ -14,7 +13,7 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 
 /**
- * 编程式事务管理--基于底层API
+ * 声明式事务管理：基于AOP
  */
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -22,18 +21,9 @@ public class OrderServiceImpl implements OrderService {
     private OrderDao orderDao;
     @Autowired
     private ProductDao productDao;
-    @Autowired
-    @Qualifier("transactionManager")
-    private PlatformTransactionManager platformTransactionManager;
-    @Autowired
-    @Qualifier("transactionDefination")
-    private TransactionDefinition transactionDefinition;
 
     @Override
     public void addOrder(Order order) {
-        //开启事务/获取事务
-        TransactionStatus ts = platformTransactionManager.getTransaction(transactionDefinition);
-        try {
             //第一步 生成订单
             orderDao.insert(order);
             //第二步 修改库存
@@ -41,11 +31,5 @@ public class OrderServiceImpl implements OrderService {
             product.setStock(product.getStock() - order.getNumber());
             productDao.update(product);
             //提交事务
-            platformTransactionManager.commit(ts);
-        } catch (Exception e) {
-            //事务回滚
-            e.printStackTrace();
-            platformTransactionManager.rollback(ts);
-        }
     }
 }
