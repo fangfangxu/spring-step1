@@ -970,7 +970,7 @@ ORM框架来对持久层进行操作：eg：Mybatis
 
 (2)Spring实现事务两种方式：
 
-   a.编程式事务处理
+   a.编程式事务处理(基于底层API、基于TransactionTemplate 两种方式)
    
    b.声明式事务处理  
    
@@ -1048,10 +1048,71 @@ ORM框架来对持久层进行操作：eg：Mybatis
             }
         }
         
- （2）Spring基于基于TransactionTemplate的事务实现        
+ （2）Spring基于基于TransactionTemplate的事务实现(简化基于底层API方式繁琐的步骤)        
+         
+        spring-dao.xml:
         
+            <context:component-scan base-package="demo11_tx.dao"/>
+            <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <property name="url"
+                          value="jdbc:mysql://localhost:3306/os?useUnicode=true&amp;charactorEncoding=utf-8&amp;serverTimezone=UTC"/>
+                <property name="username" value="root"/>
+                <property name="password" value="123456"/>
+            </bean>
         
+            <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+                <property name="dataSource" ref="dataSource"/>
+            </bean>
+      
+      
+        spring-service2.xml:
         
+            <import resource="spring-dao.xml"/>
+            <context:component-scan base-package="demo11_tx.service.impl2"/>
+            <!--定义事务管理器：事务管理器实现类的选择：取决于持久层使用什么实现
+          Spring Jdbc Template选择DataSourceTransactionManager事务管理器，
+          那么DataSourceTransactionManager事务管理器，至少要告诉事务管理器你使用的数据源
+          是哪个-->
+            <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                <property name="dataSource" ref="dataSource"/>
+            </bean>
+           <!--transaction模板-->
+            <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+                <property name="transactionManager" ref="transactionManager"/>
+            </bean>
         
-        
+    Service实现：
+    
+    @Service
+    public class OrderServiceImpl implements OrderService {
+        @Autowired
+        private OrderDao orderDao;
+        @Autowired
+        private ProductDao productDao;
+        @Autowired
+        private TransactionTemplate transactionTemplate;
+    
+        @Override
+        public void addOrder(final Order order) {
+            transactionTemplate.execute(new TransactionCallback() {
+                @Override
+                public Object doInTransaction(TransactionStatus transactionStatus) {
+                    try {
+                        //第一步 生成订单
+                        orderDao.insert(order);
+                        //第二步 修改库存
+                        Product product = productDao.select(order.getProductsId());
+                        product.setStock(product.getStock() - order.getNumber());
+                        productDao.update(product);
+                    } catch (Exception e) {
+                        //事务回滚
+                        e.printStackTrace();
+                        transactionStatus.setRollbackOnly();
+                    }
+                    return null;
+                }
+            });
+        }
+    }   
                    
