@@ -1,4 +1,4 @@
-package demo11_tx.dao;
+package demo11_tx.entity;
 
 public class Product {
     private String id;

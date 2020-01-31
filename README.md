@@ -895,3 +895,82 @@ ORM框架来对持久层进行操作：eg：Mybatis
             }
         }
     }     
+ 
+（2）JDBC事务隔离级别：用来解决事务并发产生的问题
+
+     JDBC事务隔离级别
+     隔离级别
+     -TRANSACTION_NONE(不支持事务) 0;
+     -TRANSACTION_READ_UNCOMMITTED(读未提交）1；
+     -TRANSACTION_READ_COMMITTED（读已提交）2；
+     -TRANSACTION_REPEATABLE_READ（可重复读）4；
+     _TRANSACTION_SERIALIZABLE （串行化）8；
+     事务隔离级别设置
+     -getTransactionIsolation 获取当前隔离级别
+     -setTransactionIsolation 设置隔离级别 默认为4
+ 
+ 
+ 5、 Spring事务处理   
+ 
+ 1、基本概念
+ 
+    （1）
+       PlatformTransactionManager 事务管理器
+       TransactionDefinition 事务定义
+       TransactionSatus 事务状态/正在运行的事务
+    事务定义（TransactionDefinition）传给事务管理器（PlatformTransactionManager） 
+    事务管理器创建出一个正在运行的事务（TransactionSatus）
+    
+    （2）依次介绍以上接口中的方法
+    1、TransationDenfinition接口：
+    隔离级别：
+        ISOLATION_DEFAULT使用数据库默认；
+        ISOLATION_READ_UNCOMMITTED；
+        ISOLATION_READ_COMMITTED；
+        ISOLATION_REPEATABLE_READ；
+        ISOLATION_SERIALIZABLE；
+    默认超时：
+        TIMEOUT_DEFAULT默认30秒；
+    事务传播行为(方法调用方法时，被调用方法的一个事务传递的问题)：
+         PROPAGTION_REQUIRED支持当前事务，如果当前没有事务，就新建一个事务（最常用，Spring默认）
+         eg：针对b(),b方法必须以事务的方式执行，现在b是被a调用，那么两种情况：a本事是否有事务？
+         情况一：a没事务，b就会封装成一个事务；
+         
+         public class Propagtion {       
+             public void a(){
+                 //步骤
+                  b();
+             }                 
+             public void b(){
+                 //begin
+                 //步骤
+                 //commit
+             }
+         }
+         情况二：a有事务，b会加入到a的事务里
+         
+         public class Propagtion {
+         
+             public void a(){
+                 //begin
+                 //步骤
+                  b();
+                 //commit
+             }
+             public void b(){
+             //步骤
+             }
+         }
+         
+         以上保证b方法里的这些步骤的执行一定是在一个事务里
+         
+2、Spring事务处理实现   
+
+      (1)持久层使用Jdbc Template
+      (2)Spring实现事务两种方式：
+         a.编程式事务处理
+         b.声明式事务处理   
+        
+        编程式事务处理:
+        基于底层API:事务定义、事务管理器、事务状态
+                   
