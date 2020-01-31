@@ -1250,3 +1250,7 @@ ORM框架来对持久层进行操作：eg：Mybatis
                    <!--配置目标类-->
                    <property name="target" ref="orderServiceTarget"/>
                </bean>    
+               
+ （3）基于<tx>命名空间的声明式事务处理
+ 
+                
