@@ -846,6 +846,52 @@ ORM框架来对持久层进行操作：eg：Mybatis
     select * from products;
     commit;
     
-4、    
+4、 JDBC事务处理
+   
+   （1）JDBC处理事务基本语句   
     
+    Connection接口是JDBC进行事务处理的核心，必须是基于一个Connection对象的多个sql操作才能封装成一个事务，不同的Connection对象没办法封装成一个事务；
+          JDBC默认事务处理行为是自动提交；
+    事务相关方法：
+         setAutoCommit设置自动提交；
+         rollback回滚事务；
+         commit提交事务；
+         
+    public class JdbcTest {
+        private String driver = "com.mysql.jdbc.Driver";
+        private String url = "jdbc:mysql://localhost:3306/os?useUnicode=true&charactorEncoding=utf-8&serverTimezone=UTC";
+        private String username = "root";
+        private String password = "123456";
     
+        @Test
+        public void addOrder() {
+            try {
+                Class.forName(driver);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            Connection connection = null;
+            try {
+                connection = DriverManager.getConnection(url, username, password);
+                connection.setAutoCommit(false);
+                Statement statement = connection.createStatement();
+                statement.execute("insert into orders values('100001','100001',2,2499,now(),null,null,'刘备','13000000000','成都','待发货')");
+                statement.execute("update products set stock=stock-2 where id='100001'");
+                statement.close();
+                connection.commit();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                try {
+                    connection.rollback();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            } finally {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }     
