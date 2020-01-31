@@ -1215,3 +1215,38 @@ ORM框架来对持久层进行操作：eg：Mybatis
                            //提交事务
                    }
                }
+               
+ （2）基于TransactionProxyFactoryBean的声明式事务处理：简化拦截器配置           
+
+        spring-service4.xml:     
+              
+              <import resource="spring-dao.xml"/>
+               <!--<context:component-scan base-package="demo11_tx.service.impl"/>-->
+               <!--定义事务管理器：事务管理器实现类的选择：取决于持久层使用什么实现
+             Spring Jdbc Template选择DataSourceTransactionManager事务管理器，
+             那么DataSourceTransactionManager事务管理器，至少要告诉事务管理器你使用的数据源
+             是哪个-->
+               <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                   <property name="dataSource" ref="dataSource"/>
+               </bean>
+           
+               <!--(1)配置要拦截的目标类-->
+               <bean id="orderServiceTarget" class="demo11_tx.service.impl.OrderServiceImpl"/>
+           
+               <!--(2)配置TransactionProxyFactoryBean=TransactionInterceptor+增强类（ProxyFactoryBean产生）-->
+               <bean id="orderService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+                   <!--事务管理器-->
+                   <property name="transactionManager" ref="transactionManager"/>
+                   <!--定义事务传播行为、事务隔离级别、只读等等-->
+                   <property name="transactionAttributes">
+                       <props>
+                           <!--拦截方法：应用事务-->
+                           <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                           <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                           <prop key="query*">PROPAGATION_REQUIRED,readOnly</prop>
+                           <prop key="*">PROPAGATION_REQUIRED</prop>
+                       </props>
+                   </property>
+                   <!--配置目标类-->
+                   <property name="target" ref="orderServiceTarget"/>
+               </bean>    
