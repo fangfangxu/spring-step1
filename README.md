@@ -1048,8 +1048,9 @@ ORM框架来对持久层进行操作：eg：Mybatis
             }
         }
         
+ 
  （2）Spring基于基于TransactionTemplate的事务实现(简化基于底层API方式繁琐的步骤)        
-         
+        
         spring-dao.xml:
         
             <context:component-scan base-package="demo11_tx.dao"/>
@@ -1251,6 +1252,28 @@ ORM框架来对持久层进行操作：eg：Mybatis
                    <property name="target" ref="orderServiceTarget"/>
                </bean>    
                
- （3）基于<tx>命名空间的声明式事务处理
  
-                
+ （3）基于<tx>命名空间的声明式事务处理【重点】
+ 
+              <import resource="spring-dao.xml"/>
+              <context:component-scan base-package="demo11_tx.service.impl"/>
+              <!--定义事务管理器：事务管理器实现类的选择：取决于持久层使用什么实现
+            Spring Jdbc Template选择DataSourceTransactionManager事务管理器，
+            那么DataSourceTransactionManager事务管理器，至少要告诉事务管理器你使用的数据源
+            是哪个-->
+              <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+                  <property name="dataSource" ref="dataSource"/>
+              </bean>
+          
+              <!--定义事务通知-->
+              <tx:advice id="txAdvice" transaction-manager="transactionManager">
+              <tx:attributes>
+                     <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+              </tx:attributes>
+              </tx:advice>
+          
+              <!--定义aop：哪些类那些方法应用了事务通知的增强-->
+              <aop:config>
+                   <aop:pointcut id="pointcut" expression="execution(* demo11_tx.service.impl.*.*(..))"/>
+                   <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+              </aop:config>      

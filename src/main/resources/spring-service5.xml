@@ -22,4 +22,17 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
+    <!--定义事务通知-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+    <tx:attributes>
+           <tx:method name="*" propagation="REQUIRED" read-only="false"/>
+    </tx:attributes>
+    </tx:advice>
+
+    <!--定义aop：哪些类那些方法应用了事务通知的增强-->
+    <aop:config>
+         <aop:pointcut id="pointcut" expression="execution(* demo11_tx.service.impl.*.*(..))"/>
+         <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
+    </aop:config>
+
 </beans>
