@@ -1277,3 +1277,35 @@ ORM框架来对持久层进行操作：eg：Mybatis
                    <aop:pointcut id="pointcut" expression="execution(* demo11_tx.service.impl.*.*(..))"/>
                    <aop:advisor advice-ref="txAdvice" pointcut-ref="pointcut"/>
               </aop:config>      
+              
+（4）基于@Transactional的声明式事务处理
+
+     spring-service6.xml:
+       <import resource="spring-dao.xml"/>
+       <context:component-scan base-package="demo11_tx.service.impl6"/>
+       <!--定义事务管理器：事务管理器实现类的选择：取决于持久层使用什么实现
+     Spring Jdbc Template选择DataSourceTransactionManager事务管理器，
+     那么DataSourceTransactionManager事务管理器，至少要告诉事务管理器你使用的数据源
+     是哪个-->
+       <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+           <property name="dataSource" ref="dataSource"/>
+       </bean>
+   
+       <!--使用tx注解驱动指定关于事务的注解，并指定事务管理器transactionManager-->
+       <tx:annotation-driven transaction-manager="transactionManager"/>
+    </beans>    
+    
+    service:
+        @Transactional(propagation=Propagation.REQUIRED)
+        @Override
+        public void addOrder(Order order) {
+                //第一步 生成订单
+                orderDao.insert(order);
+                //第二步 修改库存
+                Product product = productDao.select(order.getProductsId());
+                product.setStock(product.getStock() - order.getNumber());
+                productDao.update(product);
+                //提交事务
+        }
+        
+                  
