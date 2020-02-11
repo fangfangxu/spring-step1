@@ -1318,4 +1318,20 @@ ORM框架来对持久层进行操作：eg：Mybatis
    
    SpringIOC是通过工厂模式+反射模式+配置文件共同实现组件间的解耦的。
    
-   依赖注入是在IOC的基础上完成的；并不是IOC的完成依赖于依赖注入。             
+   依赖注入是在IOC的基础上完成的；并不是IOC的完成依赖于依赖注入。    
+   
+      补充：
+      
+      1、AOP（Aspect Orient Programming），作为面向对象编程的一种补充。
+      2、AOP 代理则可分为静态代理和动态代理两大类。
+      3、静态代理：AspectJ，AspectJ是编译时增强
+      4、动态代理：Spring AOP
+      说明（曾经以为AspectJ是Spring AOP一部分，是因为Spring AOP使用了AspectJ的Annotation。
+      使用了Aspect来定义切面,使用Pointcut来定义切入点，使用Advice来定义增强处理。虽然使用了Aspect
+      的Annotation，但是并没有使用它的编译器和织入器。其实现原理是JDK 动态代理，在运行时生成代理类。
+      为了启用 Spring 对 @AspectJ 方面配置的支持，并保证 Spring 容器中的目标 Bean 被一个或多个方面
+      自动增强，必须在 Spring 配置文件中添加如下配置
+         <aop:aspectj-autoproxy/>
+      当启动了 @AspectJ 支持后，在 Spring 容器中配置一个带 @Aspect 注释的 Bean，Spring 将会自动识别该
+       Bean，并将该 Bean 作为方面 Bean 处理。方面Bean与普通 Bean 没有任何区别，一样使用 <bean.../> 
+       元素进行配置，一样支持使用依赖注入来配置属性值。）         
